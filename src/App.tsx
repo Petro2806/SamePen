@@ -10,7 +10,9 @@ function App() {
       </header>
 
       <main className="main">
-        <InputCard />
+        <div className="input-column">
+          <InputCard />
+        </div>
       </main>
     </div>
   );
