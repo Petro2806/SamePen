@@ -1,4 +1,7 @@
+import { VoiceProfile } from "./profile";
+
 export type RewriteRequest = {
+    profile: VoiceProfile | null;
     replyTo: string;
     draft: string;
     directness: number; 
@@ -10,10 +13,6 @@ export type RewriteResult = {
     fullRewrite: string;
 };
 
-export type VoiceProfile = {
-    name: string;
-    styleRules: string[];
-};
 
 async function askOllama(system: string, prompt: string): Promise<string> {
     const response = await fetch("http://localhost:11434/api/chat",
@@ -80,8 +79,8 @@ function buildPrompt(request: RewriteRequest): string {
 }
 
 export async function rewrite(request: RewriteRequest): Promise<RewriteResult> {
-    const lightSystem = buildSystem(null, "light");
-    const fullSystem = buildSystem(null, "full");
+    const lightSystem = buildSystem(request.profile, "light");
+    const fullSystem = buildSystem(request.profile, "full");
     const prompt = buildPrompt(request);
 
     const [lightEdit, fullRewrite] = await Promise.all(
