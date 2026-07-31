@@ -3,7 +3,7 @@ import './ResultCard.css'
 
 type ResultCardProps = {
     title: string;
-    text?: string;
+    text: string | null;
     variant?: "sage";
 };
 

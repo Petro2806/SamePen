@@ -1,7 +1,16 @@
 import React from "react"
 import './ToneCard.css'
 
-const ToneCard = () => {
+type ToneCardProps = {
+    directness: number;
+    onDirectnessChange: (value: number) => void;
+    warmth: number;
+    onWarmthChange: (value: number) => void;
+    loading: boolean;
+    onRewrite: () => void;
+};
+
+const ToneCard = ({directness, onDirectnessChange, warmth, onWarmthChange, loading, onRewrite} : ToneCardProps) => {
     return <div className="card">
         <div>
             <div className="slider-card__tone">
@@ -9,7 +18,14 @@ const ToneCard = () => {
                 <span className="slider-card__name">Directness</span>
                 <span>Say it straight</span>
             </div>
-            <input type="range" className="slider-card__slider" min={0} max={100} defaultValue={50}/>
+            <input 
+                type="range" 
+                className="slider-card__slider" 
+                min={0} 
+                max={100} 
+                value={directness}
+                onChange={(e) => onDirectnessChange(Number(e.target.value))}
+            />
         </div>
         
         <div>
@@ -18,10 +34,22 @@ const ToneCard = () => {
                 <span className="slider-card__name">Warmth</span>
                 <span>Warm & friendly</span>
             </div>
-            <input type="range" className="slider-card__slider" min={0} max={100} defaultValue={40}/>
+            <input 
+                type="range" 
+                className="slider-card__slider" 
+                min={0} 
+                max={100} 
+                value={warmth}
+                onChange={(e) => onWarmthChange(Number(e.target.value))}
+            />
         </div>
 
-        <button type="button" className="slider-card__button">Rewrite in my voice</button>
+        <button 
+            type="button" 
+            className="slider-card__button"
+            onClick={onRewrite} 
+            disabled={loading}
+        >{loading ? "Rewriting.." : "Rewrite in my voice"}</button>
     </div>;
 };
 
