@@ -1,0 +1,18 @@
+<svg width="440" height="384" viewBox="0 0 110 96" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <path
+     id="bubble-outline"
+     d="m 42.185873,13.189591 c 17,0 29,11 29,25 0,14 -12,25 -29,25 -3,0 -6,-0.4 -8.7,-1 l -13.3,5 2.8,-11.5 c -6.4,-4.7 -9.8,-11.1 -9.8,-17.5 0,-14 12,-25 29,-25 z"
+     fill="none"
+     stroke="#c67139"
+     stroke-width="6"
+     stroke-linejoin="round" />
+  <path
+     id="bubble-filled"
+     d="m 69.241636,31.263941 c 17,0 29,11 29,25 0,14 -12,25 -29,25 -3,0 -6,-0.4 -8.7,-1 l -13.3,5 2.8,-11.5 c -6.4,-4.7 -9.8,-11.1 -9.8,-17.5 0,-14 12,-25 29,-25 z"
+     fill="#8fa073" />
+  <g id="dots" fill="#f5ead8" transform="translate(-4.7583643,-2.7360595)">
+    <circle cx="64" cy="59" r="4" />
+    <circle cx="74" cy="59" r="4" />
+    <circle cx="84" cy="59" r="4" />
+  </g>
+</svg>

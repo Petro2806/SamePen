@@ -3,11 +3,13 @@ import './App.css';
 import InputCard from "./components/InputCard"
 import ToneCard from "./components/ToneCard"
 import ResultCard from "./components/ResultCard"
+import logo from "./logos/logo.svg"
 
 function App() {
   return (
     <div className="App">
       <header className="header">
+        <img src={logo} alt="" className="header__logo" />
         <span className="brand">ReTone</span>
       </header>
 

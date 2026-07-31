@@ -13,6 +13,13 @@
   width: 100%;
   box-sizing: border-box;
   padding: 16px 32px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header__logo {
+  height: 24px;
 }
 
 .brand {
