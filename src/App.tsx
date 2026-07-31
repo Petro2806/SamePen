@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import InputCard from "./components/InputCard"
 import ToneCard from "./components/ToneCard"
+import ResultCard from "./components/ResultCard"
 
 function App() {
   return (
@@ -13,7 +14,12 @@ function App() {
       <main className="main">
         <div className="input-column">
           <InputCard />
-          <ToneCard /> 
+          <ToneCard />
+        </div>
+
+        <div className="results">
+          <ResultCard title="Light edit" />
+          <ResultCard title="Full rewrite" variant="sage" />
         </div>
       </main>
     </div>

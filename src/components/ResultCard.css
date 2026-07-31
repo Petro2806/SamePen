@@ -1,0 +1,25 @@
+.result-card {
+    flex: 1;
+    --result-bg: #ebddc5;
+    --result-accent: #c67139;
+    background: var(--result-bg);
+}
+.result-card--sage {
+    --result-bg: #f0fae1;
+    --result-accent: #56633f;
+}
+
+.result-card__title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--result-accent);
+}
+
+.result-card__text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
