@@ -1,4 +1,5 @@
 import { VoiceProfile } from "./profile";
+import { askOllama } from "./ollama";
 
 export type RewriteRequest = {
     profile: VoiceProfile | null;
@@ -12,33 +13,6 @@ export type RewriteResult = {
     lightEdit: string;
     fullRewrite: string;
 };
-
-
-async function askOllama(system: string, prompt: string): Promise<string> {
-    const response = await fetch("http://localhost:11434/api/chat",
-        {
-            method: "POST",
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify(
-                {
-                    model: "llama3.2",
-                    stream: false,
-                    messages: [
-                        {role: "system", content: system},
-                        {role: "user", content: prompt}
-                    ]
-                }
-            )
-        }
-    );
-
-    if (!response.ok) {
-        throw new Error(`Ollama responded with status ${response.status}`);
-    }
-
-    const data = await response.json();
-    return data.message.content.trim();
-} 
 
 function buildSystem(profile: VoiceProfile | null, variant: "light" | "full"): string {
     let result =  "You are an editor who preserves the writer's voice. " +
