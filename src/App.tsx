@@ -7,6 +7,7 @@ import ToneCard from "./components/ToneCard"
 import ResultCard from "./components/ResultCard"
 import logo from "./logos/logo.svg"
 import ProfileSelect from './components/ProfileSelect';
+import ProfileCreate from "./components/ProfileCreate";
 
 function App() {
   const [profiles, setProfiles] = useState<VoiceProfile[]>(() => loadProfiles());
@@ -17,7 +18,8 @@ function App() {
   const [warmth, setWarmth] = useState(70);
   const [result, setResult] = useState<RewriteResult | null>(null);
   const [loading, setLoading] = useState(false);
-  
+  const [creatingProfile, setCreatingProfile] = useState(false);
+
   useEffect(() => {
     saveProfiles(profiles);
   }, [profiles]);
@@ -38,16 +40,13 @@ function App() {
     }
   };
 
-  const handleAddProfile = () => {
-    const name = window.prompt("Profile name:")?.trim();
-    if (!name) return;                                  // скасував або порожнє
-    if (profiles.some(p => p.name === name)) {
-        window.alert("Profile with this name already exists");
-        return;
-    }
-    setProfiles([...profiles, { name, styleRules: [] }]);
-    setActiveProfileName(name);
-};
+  const handleAddProfile = () => setCreatingProfile(true);
+
+  const handleCreateProfile = (profile: VoiceProfile) => {
+      setProfiles([...profiles, profile]);
+      setActiveProfileName(profile.name);
+      setCreatingProfile(false);
+  };
 
   return (
     <div className="App">
@@ -64,27 +63,42 @@ function App() {
       </header>
 
       <main className="main">
-        <div className="input-column">
-          <InputCard 
-            replyTo={replyTo}
-            onReplyToChange={setReplyTo} 
-            draft={draft} 
-            onDraftChange={setDraft}
-          />
-          <ToneCard 
-            directness={directness}
-            onDirectnessChange={setDirectness}
-            warmth={warmth}
-            onWarmthChange={setWarmth}
-            loading={loading}
-            onRewrite={handleRewriteButton}
-          />
-        </div>
+        {creatingProfile && 
+          (
+            <ProfileCreate
+                existingNames={profiles.map(p => p.name)}
+                onCreate={handleCreateProfile}
+                onCancel={() => setCreatingProfile(false)}
+            />
+          )
+        }
+        {!creatingProfile &&
+          (
+            <>
+              <div className="input-column">
+                <InputCard 
+                  replyTo={replyTo}
+                  onReplyToChange={setReplyTo} 
+                  draft={draft} 
+                  onDraftChange={setDraft}
+                />
+                <ToneCard 
+                  directness={directness}
+                  onDirectnessChange={setDirectness}
+                  warmth={warmth}
+                  onWarmthChange={setWarmth}
+                  loading={loading}
+                  onRewrite={handleRewriteButton}
+                />
+              </div>
 
-        <div className="results">
-          <ResultCard title="Light edit" text={result ? result.lightEdit : null}/>
-          <ResultCard title="Full rewrite" text={result ? result.fullRewrite : null} variant="sage" />
-        </div>
+              <div className="results">
+                <ResultCard title="Light edit" text={result ? result.lightEdit : null}/>
+                <ResultCard title="Full rewrite" text={result ? result.fullRewrite : null} variant="sage" />
+              </div>
+            </>
+          )
+        }
       </main>
     </div>
   );
