@@ -1,24 +1,24 @@
-.profile-create {
+.profile-form {
     width: 480px;
     max-width: 90vw;
     margin: 32px auto 0;
     align-self: flex-start;
 }
 
-.profile-create__title {
+.profile-form__title {
     font-family: 'Caprasimo', sans-serif;
     font-size: 18px;
 }
 
-.profile-create__label {
+.profile-form__label {
     display: block;
     font-size: 13px;
     color: #82796a;
     margin-bottom: 5px;
 }
 
-.profile-create__name,
-.profile-create__samples {
+.profile-form__name,
+.profile-form__samples {
     width: 100%;
     box-sizing: border-box;
     font: inherit;
@@ -31,18 +31,18 @@
     resize: none;
 }
 
-.profile-create__name:focus,
-.profile-create__samples:focus {
+.profile-form__name:focus,
+.profile-form__samples:focus {
     outline: none;
     border-color: #c67139;
 }
 
-.profile-create__actions {
+.profile-form__actions {
     display: flex;
     gap: 10px;
 }
 
-.profile-create__button {
+.profile-form__button {
     font-family: 'Caprasimo', sans-serif;
     font-size: 15px;
     border: 1px solid transparent;
@@ -51,27 +51,27 @@
     cursor: pointer;
 }
 
-.profile-create__button:disabled {
+.profile-form__button:disabled {
     opacity: 0.6;
     cursor: default;
 }
 
-.profile-create__button--primary {
+.profile-form__button--primary {
     flex: 1;
     color: #f5ead8;
     background: #c67139;
 }
 
-.profile-create__button--primary:hover {
+.profile-form__button--primary:hover {
     background: #b2622d;
 }
 
-.profile-create__button--secondary {
+.profile-form__button--secondary {
     color: #201e1d;
     background: transparent;
     border-color: rgba(32, 30, 29, 0.3);
 }
 
-.profile-create__button--secondary:hover {
+.profile-form__button--secondary:hover {
     background: rgba(32, 30, 29, 0.07);
 }

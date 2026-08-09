@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { VoiceProfile, extractStyleRules } from "../api/profile";
-import './ProfileCreate.css';
+import './ProfileForm.css';
 
-type ProfileCreateProps = {
+type ProfileFormProps = {
     existingNames: string[];
-    onCreate: (profile: VoiceProfile) => void;
+    onSave: (profile: VoiceProfile) => void;
     onCancel: () => void;
 };
 
-const ProfileCreate = ({existingNames, onCreate, onCancel}: ProfileCreateProps) => {
+const ProfileForm = ({existingNames, onSave, onCancel}: ProfileFormProps) => {
     const [name, setName] = useState("");
     const [samples, setSamples] = useState("");
     const [loading, setLoading] = useState(false);
@@ -25,29 +25,29 @@ const ProfileCreate = ({existingNames, onCreate, onCancel}: ProfileCreateProps) 
             const rules = samples.trim() === ""
                 ? []
                 : await extractStyleRules(samples);
-            onCreate({ name: trimmedName, styleRules: rules });
+            onSave({ name: trimmedName, styleRules: rules });
         } finally {
             setLoading(false);
         }
     };
 
 
-    return <div className="card profile-create">
-                <span className="profile-create__title">New tone profile</span>
+    return <div className="card profile-form">
+                <span className="profile-form__title">New tone profile</span>
                 <div>
-                    <span className="profile-create__label">Profile name</span>
+                    <span className="profile-form__label">Profile name</span>
                     <input
                         type="text"
-                        className="profile-create__name"
+                        className="profile-form__name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
                         placeholder="e.g. Work, Casual, Sasha"
                     />
                 </div>
                 <div>
-                    <span className="profile-create__label">Writing samples</span>
+                    <span className="profile-form__label">Writing samples</span>
                     <textarea
-                        className="profile-create__samples"
+                        className="profile-form__samples"
                         rows={11}
                         value={samples}
                         onChange={(e) => setSamples(e.target.value)}
@@ -58,16 +58,16 @@ const ProfileCreate = ({existingNames, onCreate, onCancel}: ProfileCreateProps) 
                         }
                     />
                 </div>
-                <div className="profile-create__actions">
+                <div className="profile-form__actions">
                     <button
                         type="button"
-                        className="profile-create__button profile-create__button--primary"
+                        className="profile-form__button profile-form__button--primary"
                         onClick={handleCreate}
                         disabled={loading}
                         >{loading ? "Analyzing..." : "Create"}</button>
                     <button
                         type="button"
-                        className="profile-create__button profile-create__button--secondary"
+                        className="profile-form__button profile-form__button--secondary"
                         onClick={onCancel}
                         disabled={loading}
                         >Cancel</button>
@@ -76,4 +76,4 @@ const ProfileCreate = ({existingNames, onCreate, onCancel}: ProfileCreateProps) 
 
 };
 
-export default ProfileCreate;
+export default ProfileForm;

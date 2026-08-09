@@ -7,7 +7,7 @@ import ToneCard from "./components/ToneCard"
 import ResultCard from "./components/ResultCard"
 import logo from "./logos/logo.svg"
 import ProfileSelect from './components/ProfileSelect';
-import ProfileCreate from "./components/ProfileCreate";
+import ProfileForm from "./components/ProfileForm";
 
 function App() {
   const [profiles, setProfiles] = useState<VoiceProfile[]>(() => loadProfiles());
@@ -42,7 +42,7 @@ function App() {
 
   const handleAddProfile = () => setCreatingProfile(true);
 
-  const handleCreateProfile = (profile: VoiceProfile) => {
+  const handleSaveProfile = (profile: VoiceProfile) => {
       setProfiles([...profiles, profile]);
       setActiveProfileName(profile.name);
       setCreatingProfile(false);
@@ -65,9 +65,9 @@ function App() {
       <main className="main">
         {creatingProfile && 
           (
-            <ProfileCreate
+            <ProfileForm
                 existingNames={profiles.map(p => p.name)}
-                onCreate={handleCreateProfile}
+                onSave={handleSaveProfile}
                 onCancel={() => setCreatingProfile(false)}
             />
           )
