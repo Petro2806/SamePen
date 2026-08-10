@@ -2,11 +2,20 @@
     flex: 1;
     --result-bg: #ebddc5;
     --result-accent: #c67139;
+    --result-accent-soft: rgba(198, 113, 57, 0.12);
     background: var(--result-bg);
 }
 .result-card--sage {
     --result-bg: #f0fae1;
     --result-accent: #56633f;
+    --result-accent-soft: rgba(86, 99, 63, 0.12);
+}
+
+.result-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
 }
 
 .result-card__title {
@@ -15,6 +24,28 @@
     letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--result-accent);
+}
+
+.result-card__copy {
+    flex-shrink: 0;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--result-accent);
+    background: transparent;
+    border: 1px solid var(--result-accent);
+    border-radius: 999px;
+    padding: 4px 12px;
+    cursor: pointer;
+}
+
+.result-card__copy:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.result-card__copy:hover:enabled {
+    background: var(--result-accent-soft);
 }
 
 .result-card__text {

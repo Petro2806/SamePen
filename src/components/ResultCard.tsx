@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import './ResultCard.css'
 
 type ResultCardProps = {
@@ -8,13 +8,38 @@ type ResultCardProps = {
 };
 
 const ResultCard = ({ title, text, variant }: ResultCardProps) => {
+    const [copied, setCopied] = useState(false);
+
     let cardClass = "card result-card";
     if (variant === "sage") {
         cardClass += " result-card--sage";
     }
 
+    const handleCopy = async () => {
+        if (text === null) {
+            return;
+        }
+
+        try {
+            await navigator.clipboard.writeText(text);
+            setCopied(true);
+            window.setTimeout(() => setCopied(false), 1500);
+        } catch (error) {
+            console.warn("Could not copy the rewrite", error);
+            window.alert("Could not copy the text");
+        }
+    };
+
     return <div className={cardClass}>
-        <span className="result-card__title">{title}</span>
+        <div className="result-card__header">
+            <span className="result-card__title">{title}</span>
+            <button
+                type="button"
+                className="result-card__copy"
+                onClick={handleCopy}
+                disabled={text === null}
+                >{copied ? "Copied" : "Copy"}</button>
+        </div>
         <p className="result-card__text">
             {text ?? "Your rewrite will appear here"}
         </p>
