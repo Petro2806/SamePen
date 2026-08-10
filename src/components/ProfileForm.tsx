@@ -12,17 +12,23 @@ const ProfileForm = ({existingNames, onSave, onCancel}: ProfileFormProps) => {
     const [name, setName] = useState("");
     const [samples, setSamples] = useState("");
     const [loading, setLoading] = useState(false);
-    const [generated, setGenerated] = useState(false);
     const [rules, setRules] = useState<string[]>([]);
 
     const handleGenerate = async () => {
+        if (samples.trim() === "") {
+            window.alert("Paste a few writing samples first");
+            return;
+        }
+        if (rules.length > 0 && !window.confirm("Generated rules will replace the current ones. Continue?")) {
+            return;
+        }
+
         setLoading(true);
         try {
-            const extracted = samples.trim() === ""
-                ? []
-                : await extractStyleRules(samples);
-            setRules(extracted);
-            setGenerated(true);
+            setRules(await extractStyleRules(samples));
+        } catch (error) {
+            console.warn("Could not extract style rules", error);
+            window.alert("Could not get the rules. Is Ollama running?");
         } finally {
             setLoading(false);
         }
@@ -36,7 +42,7 @@ const ProfileForm = ({existingNames, onSave, onCancel}: ProfileFormProps) => {
         }
         onSave({
             name: trimmedName,
-            styleRules: rules.filter(r => r.trim() !== ""),
+            styleRules: rules.map(r => r.trim()).filter(r => r !== ""),
         });
     };
 
@@ -81,7 +87,7 @@ const ProfileForm = ({existingNames, onSave, onCancel}: ProfileFormProps) => {
                             className="profile-form__button profile-form__button--primary"
                             onClick={handleGenerate}
                             disabled={loading}
-                            >{loading ? "Analyzing..." : (generated ? "Regenerate rules" : "Generate rules")}</button>
+                            >{loading ? "Analyzing..." : (rules.length > 0 ? "Regenerate rules" : "Generate rules")}</button>
                         <button
                             type="button"
                             className="profile-form__button profile-form__button--secondary"
@@ -91,8 +97,13 @@ const ProfileForm = ({existingNames, onSave, onCancel}: ProfileFormProps) => {
                     </div>
                 </div>
 
-                <div className={"card profile-form__rules" + (generated ? "" : " profile-form__rules--hidden")}>
+                <div className="card profile-form__rules">
                     <span className="profile-form__title">Style rules</span>
+                    {rules.length === 0 &&
+                        <span className="profile-form__hint">
+                            Generate the rules from your samples, or write them yourself
+                        </span>
+                    }
                     <div className="profile-form__rules-list">
                         {rules.map((rule, index) => (
                             <div className="profile-form__rule" key={index}>

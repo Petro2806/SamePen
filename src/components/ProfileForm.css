@@ -18,10 +18,6 @@
     align-self: flex-start;
 }
 
-.profile-form__rules--hidden {
-    visibility: hidden;
-}
-
 .profile-form__title {
     font-family: 'Caprasimo', sans-serif;
     font-size: 18px;
