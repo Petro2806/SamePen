@@ -6,9 +6,11 @@ type ProfileSelectProps = {
     activeName: string | null;
     onSelect: (name: string | null) => void;
     onAdd: () => void;
+    onEdit: () => void;
+    onDelete: () => void;
 };
 
-const ProfileSelect = ({profiles, activeName, onSelect, onAdd}: ProfileSelectProps) => {
+const ProfileSelect = ({profiles, activeName, onSelect, onAdd, onEdit, onDelete}: ProfileSelectProps) => {
     const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const value = e.target.value;
         if (value === "__new__") {
@@ -19,8 +21,8 @@ const ProfileSelect = ({profiles, activeName, onSelect, onAdd}: ProfileSelectPro
     };
 
     return <div className="profile-select">
-                <select 
-                    className="profile-select__dropdown" 
+                <select
+                    className="profile-select__dropdown"
                     value={activeName ?? ""}
                     onChange={handleChange}
                     >
@@ -34,6 +36,20 @@ const ProfileSelect = ({profiles, activeName, onSelect, onAdd}: ProfileSelectPro
                         }
                     <option value="__new__">+ New profile…</option>
                 </select>
+                {activeName &&
+                    <>
+                        <button
+                            type="button"
+                            className="profile-select__button"
+                            onClick={onEdit}
+                            >Edit</button>
+                        <button
+                            type="button"
+                            className="profile-select__button profile-select__button--danger"
+                            onClick={onDelete}
+                            >Delete</button>
+                    </>
+                }
             </div>
 };
 

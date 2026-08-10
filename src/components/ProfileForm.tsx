@@ -3,16 +3,17 @@ import { VoiceProfile, extractStyleRules } from "../api/profile";
 import './ProfileForm.css';
 
 type ProfileFormProps = {
+    initial: VoiceProfile | null;
     existingNames: string[];
     onSave: (profile: VoiceProfile) => void;
     onCancel: () => void;
 };
 
-const ProfileForm = ({existingNames, onSave, onCancel}: ProfileFormProps) => {
-    const [name, setName] = useState("");
+const ProfileForm = ({initial, existingNames, onSave, onCancel}: ProfileFormProps) => {
+    const [name, setName] = useState(initial ? initial.name : "");
     const [samples, setSamples] = useState("");
     const [loading, setLoading] = useState(false);
-    const [rules, setRules] = useState<string[]>([]);
+    const [rules, setRules] = useState<string[]>(initial ? initial.styleRules : []);
 
     const handleGenerate = async () => {
         if (samples.trim() === "") {
@@ -56,7 +57,7 @@ const ProfileForm = ({existingNames, onSave, onCancel}: ProfileFormProps) => {
 
     return <div className="profile-form">
                 <div className="card profile-form__card">
-                    <span className="profile-form__title">New tone profile</span>
+                    <span className="profile-form__title">{initial ? "Edit tone profile" : "New tone profile"}</span>
                     <div>
                         <span className="profile-form__label">Profile name</span>
                         <input

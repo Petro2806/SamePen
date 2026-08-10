@@ -9,6 +9,8 @@ import logo from "./logos/logo.svg"
 import ProfileSelect from './components/ProfileSelect';
 import ProfileForm from "./components/ProfileForm";
 
+type Screen = "main" | "createProfile" | "editProfile";
+
 function App() {
   const [profiles, setProfiles] = useState<VoiceProfile[]>(() => loadProfiles());
   const [activeProfileName, setActiveProfileName] = useState<string | null>(() => loadActiveProfileName());
@@ -18,7 +20,7 @@ function App() {
   const [warmth, setWarmth] = useState(70);
   const [result, setResult] = useState<RewriteResult | null>(null);
   const [loading, setLoading] = useState(false);
-  const [creatingProfile, setCreatingProfile] = useState(false);
+  const [screen, setScreen] = useState<Screen>("main");
 
   useEffect(() => {
     saveProfiles(profiles);
@@ -40,12 +42,31 @@ function App() {
     }
   };
 
-  const handleAddProfile = () => setCreatingProfile(true);
+  const editedProfile = screen === "editProfile" ? activeProfile : null;
+
+  const handleSelectProfile = (name: string | null) => {
+      setActiveProfileName(name);
+      setScreen("main");
+  };
 
   const handleSaveProfile = (profile: VoiceProfile) => {
-      setProfiles([...profiles, profile]);
+      if (editedProfile) {
+        setProfiles(profiles.map(p => (p.name === editedProfile.name ? profile : p)));
+      }
+      else {
+        setProfiles([...profiles, profile]);
+      }
       setActiveProfileName(profile.name);
-      setCreatingProfile(false);
+      setScreen("main");
+  };
+
+  const handleDeleteProfile = () => {
+      if (!activeProfile || !window.confirm(`Delete profile "${activeProfile.name}"?`)) {
+        return;
+      }
+      setProfiles(profiles.filter(p => p.name !== activeProfile.name));
+      setActiveProfileName(null);
+      setScreen("main");
   };
 
   return (
@@ -54,25 +75,28 @@ function App() {
         <img src={logo} alt="" className="header__logo" />
         <span className="brand">ReTone</span>
 
-        <ProfileSelect 
+        <ProfileSelect
           profiles={profiles}
           activeName={activeProfileName}
-          onSelect={setActiveProfileName}
-          onAdd={handleAddProfile}
+          onSelect={handleSelectProfile}
+          onAdd={() => setScreen("createProfile")}
+          onEdit={() => setScreen("editProfile")}
+          onDelete={handleDeleteProfile}
         />
       </header>
 
       <main className="main">
-        {creatingProfile && 
+        {screen !== "main" &&
           (
             <ProfileForm
-                existingNames={profiles.map(p => p.name)}
+                initial={editedProfile}
+                existingNames={profiles.filter(p => p !== editedProfile).map(p => p.name)}
                 onSave={handleSaveProfile}
-                onCancel={() => setCreatingProfile(false)}
+                onCancel={() => setScreen("main")}
             />
           )
         }
-        {!creatingProfile &&
+        {screen === "main" &&
           (
             <>
               <div className="input-column">

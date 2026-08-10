@@ -16,7 +16,7 @@
     cursor: pointer;
 }
 
-.profile-select__add {
+.profile-select__button {
     font-family: 'Caprasimo', sans-serif;
     font-size: 14px;
     color: #c67139;
@@ -25,4 +25,17 @@
     border-radius: 999px;
     padding: 8px 14px;
     cursor: pointer;
+}
+
+.profile-select__button:hover {
+    background: rgba(198, 113, 57, 0.12);
+}
+
+.profile-select__button--danger {
+    color: #a8442f;
+    border-color: #a8442f;
+}
+
+.profile-select__button--danger:hover {
+    background: rgba(168, 68, 47, 0.12);
 }
