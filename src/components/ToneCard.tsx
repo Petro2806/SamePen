@@ -15,7 +15,9 @@ const ToneCard = ({directness, onDirectnessChange, warmth, onWarmthChange, loadi
         <div>
             <div className="slider-card__tone">
                 <span>Hint gently</span>
-                <span className="slider-card__name">Directness</span>
+                <span className="slider-card__name">
+                    Directness <span className="slider-card__value">{directness}</span>
+                </span>
                 <span>Say it straight</span>
             </div>
             <input 
@@ -31,7 +33,9 @@ const ToneCard = ({directness, onDirectnessChange, warmth, onWarmthChange, loadi
         <div>
             <div className="slider-card__tone">
                 <span>Dry & neutral</span>
-                <span className="slider-card__name">Warmth</span>
+                <span className="slider-card__name">
+                    Warmth <span className="slider-card__value">{warmth}</span>
+                </span>
                 <span>Warm & friendly</span>
             </div>
             <input 

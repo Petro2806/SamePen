@@ -9,6 +9,11 @@
 .slider-card__name {
     font-weight: 600;
     color: black;
+    white-space: nowrap;
+}
+
+.slider-card__value {
+    color: #c67139;
 }
 
 .slider-card__slider {
