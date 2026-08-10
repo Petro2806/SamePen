@@ -12,68 +12,117 @@ const ProfileForm = ({existingNames, onSave, onCancel}: ProfileFormProps) => {
     const [name, setName] = useState("");
     const [samples, setSamples] = useState("");
     const [loading, setLoading] = useState(false);
+    const [generated, setGenerated] = useState(false);
+    const [rules, setRules] = useState<string[]>([]);
 
-    const handleCreate = async () => {
-        const trimmedName = name.trim();
-        if (trimmedName === "" || existingNames.includes(trimmedName)) {
-            window.alert("Enter a unique profile name");
-            return;
-        }
-
+    const handleGenerate = async () => {
         setLoading(true);
         try {
-            const rules = samples.trim() === ""
+            const extracted = samples.trim() === ""
                 ? []
                 : await extractStyleRules(samples);
-            onSave({ name: trimmedName, styleRules: rules });
+            setRules(extracted);
+            setGenerated(true);
         } finally {
             setLoading(false);
         }
     };
 
+    const handleSave = () => {
+        const trimmedName = name.trim();
+        if (trimmedName === "" || existingNames.includes(trimmedName)) {
+            window.alert("Enter a unique profile name");
+            return;
+        }
+        onSave({
+            name: trimmedName,
+            styleRules: rules.filter(r => r.trim() !== ""),
+        });
+    };
 
-    return <div className="card profile-form">
-                <span className="profile-form__title">New tone profile</span>
-                <div>
-                    <span className="profile-form__label">Profile name</span>
-                    <input
-                        type="text"
-                        className="profile-form__name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        placeholder="e.g. Work, Casual, Sasha"
-                    />
+    const handleRuleChange = (index: number, value: string) => {
+        setRules(rules.map((r, i) => (i === index ? value : r)));
+    };
+
+    const handleRuleDelete = (index: number) => {
+        setRules(rules.filter((_, i) => i !== index));
+    };
+
+    return <div className="profile-form">
+                <div className="card profile-form__card">
+                    <span className="profile-form__title">New tone profile</span>
+                    <div>
+                        <span className="profile-form__label">Profile name</span>
+                        <input
+                            type="text"
+                            className="profile-form__name"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="e.g. Work, Casual, Sasha"
+                        />
+                    </div>
+                    <div>
+                        <span className="profile-form__label">Writing samples</span>
+                        <textarea
+                            className="profile-form__samples"
+                            rows={11}
+                            value={samples}
+                            onChange={(e) => setSamples(e.target.value)}
+                            placeholder={
+                                "Paste a few of your real messages - the more, " +
+                                "the better the style rules. \n" +
+                                "Divide each message with your usual sentence endings"
+                            }
+                        />
+                    </div>
+                    <div className="profile-form__actions">
+                        <button
+                            type="button"
+                            className="profile-form__button profile-form__button--primary"
+                            onClick={handleGenerate}
+                            disabled={loading}
+                            >{loading ? "Analyzing..." : (generated ? "Regenerate rules" : "Generate rules")}</button>
+                        <button
+                            type="button"
+                            className="profile-form__button profile-form__button--secondary"
+                            onClick={onCancel}
+                            disabled={loading}
+                            >Cancel</button>
+                    </div>
                 </div>
-                <div>
-                    <span className="profile-form__label">Writing samples</span>
-                    <textarea
-                        className="profile-form__samples"
-                        rows={11}
-                        value={samples}
-                        onChange={(e) => setSamples(e.target.value)}
-                        placeholder={
-                            "Paste a few of your real messages - the more, " +
-                            "the better the style rules. \n" +
-                            "Divide each message with your usual sentence endings"
-                        }
-                    />
-                </div>
-                <div className="profile-form__actions">
-                    <button
-                        type="button"
-                        className="profile-form__button profile-form__button--primary"
-                        onClick={handleCreate}
-                        disabled={loading}
-                        >{loading ? "Analyzing..." : "Create"}</button>
+
+                <div className={"card profile-form__rules" + (generated ? "" : " profile-form__rules--hidden")}>
+                    <span className="profile-form__title">Style rules</span>
+                    <div className="profile-form__rules-list">
+                        {rules.map((rule, index) => (
+                            <div className="profile-form__rule" key={index}>
+                                <span className="profile-form__rule-number">{index + 1}</span>
+                                <input
+                                    className="profile-form__rule-input"
+                                    value={rule}
+                                    onChange={(e) => handleRuleChange(index, e.target.value)}
+                                />
+                                <button
+                                    type="button"
+                                    className="profile-form__rule-delete"
+                                    onClick={() => handleRuleDelete(index)}
+                                    >×</button>
+                            </div>
+                        ))}
+                    </div>
                     <button
                         type="button"
                         className="profile-form__button profile-form__button--secondary"
-                        onClick={onCancel}
+                        onClick={() => setRules([...rules, ""])}
+                        >+ Add rule</button>
+                    <button
+                        type="button"
+                        className="profile-form__button profile-form__button--primary"
+                        onClick={handleSave}
                         disabled={loading}
-                        >Cancel</button>
+                        >Save profile</button>
                 </div>
             </div>;
-
 };
 
 export default ProfileForm;

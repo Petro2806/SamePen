@@ -1,13 +1,37 @@
 .profile-form {
-    width: 480px;
-    max-width: 90vw;
-    margin: 32px auto 0;
+    display: flex;
+    gap: 18px;
+    justify-content: center;
     align-self: flex-start;
+    width: 100%;
+    margin-top: 32px;
+}
+
+.profile-form__card {
+    width: 480px;
+    max-width: 45vw;
+}
+
+.profile-form__rules {
+    width: 420px;
+    max-width: 45vw;
+    align-self: flex-start;
+}
+
+.profile-form__rules--hidden {
+    visibility: hidden;
 }
 
 .profile-form__title {
     font-family: 'Caprasimo', sans-serif;
     font-size: 18px;
+}
+
+.profile-form__hint {
+    display: block;
+    font-size: 12px;
+    color: #82796a;
+    margin-top: -6px;
 }
 
 .profile-form__label {
@@ -18,7 +42,8 @@
 }
 
 .profile-form__name,
-.profile-form__samples {
+.profile-form__samples,
+.profile-form__rule-input {
     width: 100%;
     box-sizing: border-box;
     font: inherit;
@@ -32,9 +57,50 @@
 }
 
 .profile-form__name:focus,
-.profile-form__samples:focus {
+.profile-form__samples:focus,
+.profile-form__rule-input:focus {
     outline: none;
     border-color: #c67139;
+}
+
+.profile-form__rules-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.profile-form__rule {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.profile-form__rule-number {
+    width: 16px;
+    flex-shrink: 0;
+    font-size: 13px;
+    color: #82796a;
+    text-align: right;
+}
+
+.profile-form__rule-input {
+    flex: 1;
+    padding: 8px 12px;
+}
+
+.profile-form__rule-delete {
+    flex-shrink: 0;
+    border: none;
+    background: transparent;
+    color: #82796a;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 6px;
+}
+
+.profile-form__rule-delete:hover {
+    color: #201e1d;
 }
 
 .profile-form__actions {
@@ -57,7 +123,6 @@
 }
 
 .profile-form__button--primary {
-    flex: 1;
     color: #f5ead8;
     background: #c67139;
 }
@@ -74,4 +139,8 @@
 
 .profile-form__button--secondary:hover {
     background: rgba(32, 30, 29, 0.07);
+}
+
+.profile-form__actions .profile-form__button--primary {
+    flex: 1;
 }
