@@ -51,6 +51,33 @@
   align-items: flex-start;
 }
 
+.error-banner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  box-sizing: border-box;
+  background: #f7dacd;
+  border: 1px solid #c0522f;
+  border-radius: 18px;
+  padding: 14px 18px;
+  color: #7a2f16;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.error-banner__close {
+  flex-shrink: 0;
+  font: inherit;
+  font-size: 18px;
+  line-height: 1;
+  color: inherit;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
 .card {
   display: flex;
   flex-direction: column;
