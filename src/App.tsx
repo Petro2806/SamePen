@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {rewrite, RewriteResult} from './api/rewrite'
 import { loadActiveProfileName, saveActiveProfileName, loadProfiles, saveProfiles, VoiceProfile} from './api/profile';
+import { loadDraft, saveDraft } from './api/draft';
 import './App.css';
 import InputCard from "./components/InputCard"
 import ToneCard from "./components/ToneCard"
@@ -11,14 +12,17 @@ import ProfileForm from "./components/ProfileForm";
 
 type Screen = "main" | "createProfile" | "editProfile";
 
+const SAVE_DRAFT_DELAY_MS = 500;
+
 function App() {
+  const [restored] = useState(loadDraft);
   const [profiles, setProfiles] = useState<VoiceProfile[]>(() => loadProfiles());
   const [activeProfileName, setActiveProfileName] = useState<string | null>(() => loadActiveProfileName());
-  const [replyTo, setReplyTo] = useState("");
-  const [draft, setDraft] = useState("");
+  const [replyTo, setReplyTo] = useState(restored.replyTo);
+  const [draft, setDraft] = useState(restored.draft);
   const [directness, setDirectness] = useState(50);
   const [warmth, setWarmth] = useState(70);
-  const [result, setResult] = useState<RewriteResult | null>(null);
+  const [result, setResult] = useState<RewriteResult | null>(restored.result);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [screen, setScreen] = useState<Screen>("main");
@@ -30,6 +34,11 @@ function App() {
   useEffect(() => {
     saveActiveProfileName(activeProfileName);
   }, [activeProfileName]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => saveDraft({replyTo, draft, result}), SAVE_DRAFT_DELAY_MS);
+    return () => window.clearTimeout(timer);
+  }, [replyTo, draft, result]);
 
   const activeProfile = profiles.find(p => p.name === activeProfileName) ?? null;
 
