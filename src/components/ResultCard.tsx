@@ -4,10 +4,11 @@ import './ResultCard.css'
 type ResultCardProps = {
     title: string;
     text: string | null;
+    loading: boolean;
     variant?: "sage";
 };
 
-const ResultCard = ({ title, text, variant }: ResultCardProps) => {
+const ResultCard = ({ title, text, loading, variant }: ResultCardProps) => {
     const [copied, setCopied] = useState(false);
 
     let cardClass = "card result-card";
@@ -37,12 +38,13 @@ const ResultCard = ({ title, text, variant }: ResultCardProps) => {
                 type="button"
                 className="result-card__copy"
                 onClick={handleCopy}
-                disabled={text === null}
+                disabled={text === null || loading}
                 >{copied ? "Copied" : "Copy"}</button>
         </div>
-        <p className="result-card__text">
-            {text ?? "Your rewrite will appear here"}
-        </p>
+        {loading
+            ? <p className="result-card__text result-card__text--pending">Rewriting…</p>
+            : <p className="result-card__text">{text ?? "Your rewrite will appear here"}</p>
+        }
     </div>;
 };
 

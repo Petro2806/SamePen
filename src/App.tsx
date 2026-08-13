@@ -134,8 +134,8 @@ function App() {
               </div>
 
               <div className="results">
-                <ResultCard title="Light edit" text={result ? result.lightEdit : null}/>
-                <ResultCard title="Full rewrite" text={result ? result.fullRewrite : null} variant="sage" />
+                <ResultCard title="Light edit" text={result ? result.lightEdit : null} loading={loading}/>
+                <ResultCard title="Full rewrite" text={result ? result.fullRewrite : null} loading={loading} variant="sage" />
               </div>
             </>
           )
