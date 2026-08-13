@@ -20,6 +20,7 @@ function App() {
   const [warmth, setWarmth] = useState(70);
   const [result, setResult] = useState<RewriteResult | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [screen, setScreen] = useState<Screen>("main");
 
   useEffect(() => {
@@ -34,9 +35,13 @@ function App() {
 
   const handleRewriteButton = async () => {
     setLoading(true);
+    setError(null);
     try {
       const res = await rewrite({profile: activeProfile, replyTo, draft, directness, warmth});
       setResult(res);
+    } catch (err) {
+      console.warn("Could not rewrite the draft", err);
+      setError("Could not rewrite the draft. Check that Ollama is running and try again.");
     } finally {
       setLoading(false);
     }
@@ -114,6 +119,18 @@ function App() {
                   loading={loading}
                   onRewrite={handleRewriteButton}
                 />
+                {error &&
+                  (
+                    <div className="error-banner">
+                      <span>{error}</span>
+                      <button
+                        type="button"
+                        className="error-banner__close"
+                        onClick={() => setError(null)}
+                        >×</button>
+                    </div>
+                  )
+                }
               </div>
 
               <div className="results">
