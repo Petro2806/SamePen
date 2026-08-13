@@ -54,3 +54,8 @@
     line-height: 1.6;
     white-space: pre-wrap;
 }
+
+.result-card__text--pending {
+    color: var(--result-accent);
+    opacity: 0.75;
+}
