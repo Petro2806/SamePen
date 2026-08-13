@@ -9,6 +9,8 @@ import ResultCard from "./components/ResultCard"
 import logo from "./logos/logo.svg"
 import ProfileSelect from './components/ProfileSelect';
 import ProfileForm from "./components/ProfileForm";
+import StartGate from "./components/StartGate";
+import { checkOllama } from './api/ollama';
 
 type Screen = "main" | "createProfile" | "editProfile";
 
@@ -26,6 +28,9 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [screen, setScreen] = useState<Screen>("main");
+  const [started, setStarted] = useState(false);
+  const [checking, setChecking] = useState(false);
+  const [startError, setStartError] = useState<string | null>(null);
 
   useEffect(() => {
     saveProfiles(profiles);
@@ -53,6 +58,22 @@ function App() {
       setError("Could not rewrite the draft. Check that Ollama is running and try again.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleStartButton = async () => {
+    setChecking(true);
+    setStartError(null);
+    try {
+      const check = await checkOllama();
+      if (check.ok) {
+        setStarted(true);
+      }
+      else {
+        setStartError(check.message);
+      }
+    } finally {
+      setChecking(false);
     }
   };
 
@@ -89,18 +110,31 @@ function App() {
         <img src={logo} alt="" className="header__logo" />
         <span className="brand">ReTone</span>
 
-        <ProfileSelect
-          profiles={profiles}
-          activeName={activeProfileName}
-          onSelect={handleSelectProfile}
-          onAdd={() => setScreen("createProfile")}
-          onEdit={() => setScreen("editProfile")}
-          onDelete={handleDeleteProfile}
-        />
+        {started &&
+          (
+            <ProfileSelect
+              profiles={profiles}
+              activeName={activeProfileName}
+              onSelect={handleSelectProfile}
+              onAdd={() => setScreen("createProfile")}
+              onEdit={() => setScreen("editProfile")}
+              onDelete={handleDeleteProfile}
+            />
+          )
+        }
       </header>
 
       <main className="main">
-        {screen !== "main" &&
+        {!started &&
+          (
+            <StartGate
+              checking={checking}
+              error={startError}
+              onStart={handleStartButton}
+            />
+          )
+        }
+        {started && screen !== "main" &&
           (
             <ProfileForm
                 initial={editedProfile}
@@ -110,7 +144,7 @@ function App() {
             />
           )
         }
-        {screen === "main" &&
+        {started && screen === "main" &&
           (
             <>
               <div className="input-column">

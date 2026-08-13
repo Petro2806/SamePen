@@ -1,0 +1,54 @@
+.start-gate {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    padding-top: 80px;
+}
+
+.start-gate__card {
+    width: 440px;
+    max-width: 100%;
+    align-items: flex-start;
+}
+
+.start-gate__title {
+    font-family: 'Caprasimo', sans-serif;
+    font-size: 20px;
+}
+
+.start-gate__text {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #6b6357;
+}
+
+.start-gate__error {
+    align-self: stretch;
+    box-sizing: border-box;
+    background: #f7dacd;
+    border: 1px solid #c0522f;
+    border-radius: 18px;
+    padding: 14px 18px;
+    color: #7a2f16;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.start-gate__button {
+    font-family: 'Caprasimo', sans-serif;
+    font-size: 12px;
+    color: #f5ead8;
+    background: #c67139;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 20px;
+    cursor: pointer;
+}
+.start-gate__button:hover:enabled {
+    background: #b2622d;
+}
+.start-gate__button:disabled {
+    opacity: 0.6;
+    cursor: default;
+}
