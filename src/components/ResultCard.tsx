@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import ThinkingText from "./ThinkingText"
 import './ResultCard.css'
 
 type ResultCardProps = {
@@ -42,7 +43,7 @@ const ResultCard = ({ title, text, loading, variant }: ResultCardProps) => {
                 >{copied ? "Copied" : "Copy"}</button>
         </div>
         {loading
-            ? <p className="result-card__text result-card__text--pending">Rewriting…</p>
+            ? <p className="result-card__text result-card__text--pending"><ThinkingText label="Rewriting" /></p>
             : <p className="result-card__text">{text ?? "Your rewrite will appear here"}</p>
         }
     </div>;
