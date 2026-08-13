@@ -12,7 +12,7 @@ const StartGate = ({checking, error, onStart}: StartGateProps) => {
         <div className="card start-gate__card">
             <span className="start-gate__title">Ready when Ollama is</span>
             <p className="start-gate__text">
-                ReTone rewrites your messages with a model running on your own machine,
+                SamePen rewrites your messages with a model running on your own machine,
                 so nothing you write leaves it. Start Ollama, then check the connection.
             </p>
             {error &&
