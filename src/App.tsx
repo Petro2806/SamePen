@@ -108,7 +108,7 @@ function App() {
     <div className="App">
       <header className="header">
         <img src={logo} alt="" className="header__logo" />
-        <span className="brand">ReTone</span>
+        <span className="brand">SamePen</span>
 
         {started &&
           (

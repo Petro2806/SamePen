@@ -1,46 +1,63 @@
-# Getting Started with Create React App
+# SamePen
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Rewrite a message in your own voice, without sending it to the cloud.
 
-## Available Scripts
+You paste the message you are replying to, your rough draft, and set two tone
+sliders. SamePen gives you back two versions: a **light edit** that keeps your
+wording almost intact, and a **full rewrite** that is free to restructure. Both
+of them try to sound like *you*, not like a chatbot.
 
-In the project directory, you can run:
+Everything runs on a local [Ollama](https://ollama.com) instance. Your
+drafts never leave your machine.
 
-### `npm start`
+## Voice profiles
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+A profile is a short list of style rules - "signs off with cheers", "keeps
+sentences under ten words", "never uses exclamation marks". You can paste a few
+of your real messages and let the model distill the rules for you, then edit,
+add or delete any of them by hand. The active profile is injected into every
+rewrite. Profiles are stored in your browser's local storage.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Requirements
 
-### `npm test`
+- Node.js 18+
+- [Ollama](https://ollama.com) running locally with at least one model pulled.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+You can download a small model that doesn't need a lot of computer resources:
+```bash
+ollama pull llama3.2
+ollama serve
+```
 
-### `npm run build`
+## Getting started
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The dev server runs on [http://localhost:3000](http://localhost:3000).
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+SamePen talks to Ollama on `http://localhost:11434` and expects the model
+`llama3.2` by default. On startup it checks that Ollama is reachable and that
+the model is there, so you will know right away if something is off.
 
-### `npm run eject`
+## Configuration
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Both the Ollama endpoint and the model are read from environment variables and
+fall back to the local defaults. Copy the example file and edit it if you run
+Ollama elsewhere or prefer another model:
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+cp .env.example .env.local
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+| Variable | Default | What it is |
+| --- | --- | --- |
+| `REACT_APP_OLLAMA_URL` | `http://localhost:11434/api/chat` | Ollama chat endpoint |
+| `REACT_APP_OLLAMA_MODEL` | `llama3.2` | Model used for rewrites and style analysis |
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Status
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+A learning project, built to get better at React and TypeScript. It works, and
+it is still growing. Also I will host the same project with better models and better prompts at [samepen.app](https://samepen.app).
