@@ -1,9 +1,24 @@
 const OLLAMA_URL = process.env.REACT_APP_OLLAMA_URL || "http://localhost:11434/api/chat";
 const MODEL = process.env.REACT_APP_OLLAMA_MODEL || "llama3.2";
 
+const CHECKED_KEY = "ollama_checked";
+
 export type OllamaCheck =
     | {ok: true}
     | {ok: false, message: string};
+
+export function loadOllamaChecked(): boolean {
+    return localStorage.getItem(CHECKED_KEY) === "true";
+}
+
+export function saveOllamaChecked(checked: boolean): void {
+    if (checked) {
+        localStorage.setItem(CHECKED_KEY, "true");
+    }
+    else {
+        localStorage.removeItem(CHECKED_KEY);
+    }
+}
 
 function tagsUrl(): string {
     return new URL("/api/tags", OLLAMA_URL).toString();

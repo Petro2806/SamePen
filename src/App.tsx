@@ -10,7 +10,7 @@ import logo from "./logos/logo.svg"
 import ProfileSelect from './components/ProfileSelect';
 import ProfileForm from "./components/ProfileForm";
 import StartGate from "./components/StartGate";
-import { checkOllama } from './api/ollama';
+import { checkOllama, loadOllamaChecked, saveOllamaChecked } from './api/ollama';
 
 type Screen = "main" | "createProfile" | "editProfile";
 
@@ -28,7 +28,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [screen, setScreen] = useState<Screen>("main");
-  const [started, setStarted] = useState(false);
+  const [started, setStarted] = useState(loadOllamaChecked);
   const [checking, setChecking] = useState(false);
   const [startError, setStartError] = useState<string | null>(null);
 
@@ -74,6 +74,7 @@ function App() {
     try {
       const check = await checkOllama();
       if (check.ok) {
+        saveOllamaChecked(true);
         setStarted(true);
       }
       else {
