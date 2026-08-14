@@ -3,6 +3,8 @@ import { RewriteResult } from "./rewrite";
 export type SavedDraft = {
     replyTo: string;
     draft: string;
+    directness: number;
+    warmth: number;
     result: RewriteResult | null;
 };
 
@@ -11,6 +13,8 @@ const DRAFT_KEY = "draft";
 const EMPTY_DRAFT: SavedDraft = {
     replyTo: "",
     draft: "",
+    directness: 50,
+    warmth: 70,
     result: null,
 };
 

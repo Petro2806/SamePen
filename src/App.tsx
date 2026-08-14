@@ -22,8 +22,8 @@ function App() {
   const [activeProfileName, setActiveProfileName] = useState<string | null>(() => loadActiveProfileName());
   const [replyTo, setReplyTo] = useState(restored.replyTo);
   const [draft, setDraft] = useState(restored.draft);
-  const [directness, setDirectness] = useState(50);
-  const [warmth, setWarmth] = useState(70);
+  const [directness, setDirectness] = useState(restored.directness);
+  const [warmth, setWarmth] = useState(restored.warmth);
   const [result, setResult] = useState<RewriteResult | null>(restored.result);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -41,9 +41,16 @@ function App() {
   }, [activeProfileName]);
 
   useEffect(() => {
-    const timer = window.setTimeout(() => saveDraft({replyTo, draft, result}), SAVE_DRAFT_DELAY_MS);
-    return () => window.clearTimeout(timer);
-  }, [replyTo, draft, result]);
+    const save = () => saveDraft({replyTo, draft, directness, warmth, result});
+
+    const timer = window.setTimeout(save, SAVE_DRAFT_DELAY_MS);
+    window.addEventListener("pagehide", save);
+
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("pagehide", save);
+    };
+  }, [replyTo, draft, directness, warmth, result]);
 
   const activeProfile = profiles.find(p => p.name === activeProfileName) ?? null;
 
